@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="text-end pe-4 mt-2">
+    <a href="/store/cart/" class="btn btn-sm btn-outline-secondary position-relative">
+        🛒 Cart
+        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            0
+        </span>
+    </a>
+</div>
+
+<h2 class="text-center mb-4">Our Services</h2>
+<div class="row">
+    {% for service in services %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 shadow">
+                <img src="{{ service.image.url }}" class="card-img-top" alt="{{ service.name }}" style="height: 400px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ service.name }}</h5>
+                    <p class="card-text">Duration: {{ service.duration }}</p>
+                    <p class="card-text text-muted">${{ service.price }}</p>
+                    <a href="{% url 'book' service.id %}" class="btn btn-outline-primary mt-2">Book Now</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

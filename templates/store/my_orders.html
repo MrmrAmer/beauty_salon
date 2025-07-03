@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div class="alert
+                            alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}
+                            alert-dismissible fade show"
+                        role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <h2 class="mb-4">🛍️ My Orders</h2>
+
+    {% if orders %}
+        {% for order in orders %}
+            <div class="card shadow-sm mb-4">
+                <div class="card-header d-flex justify-content-between">
+                    <strong>Order #{{ order.id }}</strong>
+                    <span class="text-muted">{{ order.created_at|date:"F j, Y, g:i a" }}</span>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for item in order.items.all %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ item.product.name }} × {{ item.quantity }}</span>
+                                <span>${{ item.subtotal_price }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="text-end mt-3">
+                        <strong>Total: ${{ order.total_price }}</strong>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">You haven’t placed any orders yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Chat Assistant</h2>
+<form method="POST" action="/chat/send/">
+    {% csrf_token %}
+    <div class="mb-3">
+        <textarea name="message" class="form-control" rows="2" placeholder="Type your message..."></textarea>
+    </div>
+    <button class="btn btn-primary">Send</button>
+</form>
+
+<hr>
+<h4>Message History</h4>
+<div class="chat-messages">
+    {% for msg in messages %}
+    <div class="mb-2 p-2 border rounded">
+        <strong>You:</strong> {{ msg.message }}<br>
+        <strong>Bot:</strong> {{ msg.response }}
+        <div class="text-muted small">{{ msg.created_at }}</div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
