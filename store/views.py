@@ -20,9 +20,6 @@ def add_to_cart(request):
         return JsonResponse({'status': 'ok', 'cart': cart})
     return JsonResponse({'status': 'error'}, status=400)
 
-def get_cart(request):
-    return JsonResponse({'cart': request.session.get('cart', {})})
-
 def get_cart_data(request):
     cart = request.session.get('cart', {})
     return JsonResponse({'cart': cart})
