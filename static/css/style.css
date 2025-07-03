@@ -1,0 +1,72 @@
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fadeInUp 1s ease forwards;
+  opacity: 0;
+}
+.btn-pink {
+  background-color: #eab1d5;
+  color: white;
+  border: none;
+}
+.btn-pink:hover {
+  background-color: #d88cbf;
+  color: white;
+}
+.navbar-nav .nav-link {
+  position: relative;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+.navbar-nav .nav-link:hover {
+  color: #eab1d5;
+  transform: scale(1.05);
+}
+.navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0%;
+  height: 2px;
+  background-color: #eab1d5;
+  transition: width 0.3s ease;
+}
+.navbar-nav .nav-link:hover::after {
+  width: 100%;
+}
+.hero-rounded {
+  border-radius: 15px;
+  overflow: hidden;
+}
+.hero-shadow {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+.hero-content-glow {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+.img-hover-effect {
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+.img-hover-effect:hover {
+  transform: scale(1.03);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+.footer-link:hover {
+  color: #0d6efd !important;
+  text-decoration: underline;
+}
+body, html {
+  overflow-x: hidden;
+}
+.hero-section {
+    min-height: 90vh;
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)),
+                url('../images/3.jpg') center / cover no-repeat;
+    padding-bottom: 5rem;
+}
