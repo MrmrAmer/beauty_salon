@@ -15,7 +15,7 @@
 						<option value="" disabled selected>Choose a service</option>
 						{% for service in services %}
 							<option value="{{ service.id }}" {% if selected_service and service.id == selected_service.id %}selected{% endif %}>
-								{{ service.name }} ( ${{ service.price }} )
+								{{ service.name }} ( ${{ service.price }} ) - {{ service.duration }}
 							</option>
 						{% endfor %}
 					</select>
@@ -33,12 +33,14 @@
 
 				<div class="mb-3">
 					<label for="date" class="form-label">Choose a Date</label>
-					<input type="date" class="form-control" id="date" name="date" required>
+					<input type="date" class="form-control" id="date" name="date" min="{{ today|date:'Y-m-d' }}" required>
 				</div>
 
 				<div class="mb-3">
 					<label for="time" class="form-label">Choose a Time</label>
-					<input type="time" class="form-control" id="time" name="time" required>
+					<select class="form-select" id="time" name="time" required>
+						<option value="" disabled selected>Choose a time</option>
+					</select>
 				</div>
 
 				<div class="d-grid">
@@ -48,5 +50,46 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	async function fetchSlots() {
+		const date = document.getElementById('date').value;
+		const staff = document.getElementById('staff').value;
+		const service = document.getElementById('service').value;
+
+		if (date && staff && service) {
+			const res = await fetch(`/appointments/api/get-slots/?date=${date}&staff=${staff}&service=${service}`);
+			const data = await res.json();
+
+			const timeSelect = document.getElementById('time');
+			timeSelect.innerHTML = "";
+
+			if (data.slots && data.slots.length > 0) {
+				const defaultOpt = document.createElement('option');
+				defaultOpt.disabled = true;
+				defaultOpt.selected = true;
+				defaultOpt.text = 'Choose a time';
+				timeSelect.appendChild(defaultOpt);
+
+				data.slots.forEach(slot => {
+					const opt = document.createElement('option');
+					opt.value = slot;
+					opt.textContent = slot;
+					timeSelect.appendChild(opt);
+				});
+			} else {
+				const opt = document.createElement('option');
+				opt.disabled = true;
+				opt.selected = true;
+				opt.textContent = 'No available slots';
+				timeSelect.appendChild(opt);
+			}
+		}
+	}
+
+	document.getElementById('date').addEventListener('change', fetchSlots);
+	document.getElementById('staff').addEventListener('change', fetchSlots);
+	document.getElementById('service').addEventListener('change', fetchSlots);
+</script>
 
 {% endblock %}

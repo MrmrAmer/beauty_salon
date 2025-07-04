@@ -19,6 +19,14 @@ class Service(models.Model):
     def __str__(self):
         return self.name
 
+    def duration_in_minutes(self):
+        mapping = {
+            "30 minutes": 30,
+            "1 hour": 60,
+            "1.5 hours": 90,
+        }
+        return mapping.get(self.duration, 30)
+
 
 class BookingManager(models.Manager):
     def basic_validator(self, post_data):
