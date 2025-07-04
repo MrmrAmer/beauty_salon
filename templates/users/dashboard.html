@@ -26,8 +26,8 @@
                         <p class="card-text">Book, view, or cancel your beauty appointments.</p>
                     </div>
                     <div class="mt-3 d-flex flex-column flex-md-row justify-content-center gap-2">
-                        <a href="/appointments/my_bookings/" class="btn btn-primary">My Bookings</a>
-                        <a href="/appointments/" class="btn btn-primary">Book an Appointment</a>
+                        <a href="{% url 'my_bookings' %}" class="btn btn-primary">My Bookings</a>
+                        <a href="{% url 'book_appointment' %}" class="btn btn-primary">Book an Appointment</a>
                     </div>
                 </div>
             </div>
@@ -41,8 +41,8 @@
                         <p class="card-text">Browse products and track your orders.</p>
                     </div>
                     <div class="mt-3 d-flex flex-column flex-md-row justify-content-center gap-2">
-                        <a href="/store/my_orders/" class="btn btn-success">My Orders</a>
-                        <a href="/store/" class="btn btn-success">Go to Store</a>
+                        <a href="{% url 'my_orders' %}" class="btn btn-success">My Orders</a>
+                        <a href="{% url 'product_list' %}" class="btn btn-success">Go to Store</a>
                     </div>
                 </div>
             </div>

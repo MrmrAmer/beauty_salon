@@ -27,7 +27,7 @@
                 <span class="text-muted">Status: {{ b.status }}</span>
             </div>
             {% if b.status != 'cancelled' %}
-                <a href="/appointments/cancel/{{ b.id }}/" class="btn btn-sm btn-danger">Cancel</a>
+                <a href="{% url 'cancel_booking' b.id %}" class="btn btn-sm btn-danger">Cancel</a>
             {% endif %}
         </li>
         {% endfor %}

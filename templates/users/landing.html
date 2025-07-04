@@ -7,8 +7,8 @@
         <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInDown">Welcome to Bloom Beauty Salon</h1>
         <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s">Enhancing your beauty, naturally.</p>
         <div class="d-flex justify-content-center gap-3 flex-column flex-md-row animate__animated animate__fadeInUp animate__delay-2s">
-            <a href="/appointments/" class="btn btn-pink btn-lg rounded-pill px-4">Book Appointment</a>
-            <a href="/store/" class="btn btn-outline-light btn-lg rounded-pill px-4">Shop Products</a>
+            <a href="{% url 'book_appointment' %}" class="btn btn-pink btn-lg rounded-pill px-4">Book Appointment</a>
+            <a href="{% url 'product_list' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">Shop Products</a>
         </div>
     </div>
 </div>
@@ -24,7 +24,7 @@
                 <p class="fs-5 text-muted mb-4">
                     From facials and hair styling to manicures and skin treatments, we offer professional care tailored for women.
                 </p>
-                <a href="/services" class="btn btn-outline-primary btn-lg px-4 py-2 fw-semibold rounded-pill">
+                <a href="{% url 'services' %}" class="btn btn-outline-primary btn-lg px-4 py-2 fw-semibold rounded-pill">
                     Explore Services
                 </a>
             </div>
@@ -43,7 +43,7 @@
                 <p class="fs-5 text-muted mb-4">
                     From nourishing hair oils and skin serums to organic scrubs and beauty essentials, our carefully curated products support your self-care routine with quality and care.
                 </p>
-                <a href="/store/" class="btn btn-outline-primary btn-lg px-4 py-2 fw-semibold rounded-pill">
+                <a href="{% url 'product_list' %}" class="btn btn-outline-primary btn-lg px-4 py-2 fw-semibold rounded-pill">
                     Explore Products
                 </a>
             </div>
@@ -86,11 +86,11 @@
             <div class="text-center text-md-start">
                 <h6 class="text-uppercase fw-semibold mb-3">Quick Links</h6>
                 <ul class="list-unstyled">
-                    <li><a href="/services/" class="text-white text-decoration-none footer-link">Services</a></li>
-                    <li><a href="/store/" class="text-white text-decoration-none footer-link">Store</a></li>
-                    <li><a href="/appointments/" class="text-white text-decoration-none footer-link">Book Appointment</a></li>
-                    <li><a href="/contact/" class="text-white text-decoration-none footer-link">Contact</a></li>
-                    <li><a href="/login/" class="text-white text-decoration-none footer-link">Login</a></li>
+                    <li><a href="{% url 'services' %}" class="text-white text-decoration-none footer-link">Services</a></li>
+                    <li><a href="{% url 'product_list' %}" class="text-white text-decoration-none footer-link">Store</a></li>
+                    <li><a href="{% url 'book_appointment' %}" class="text-white text-decoration-none footer-link">Book Appointment</a></li>
+                    <li><a href="{% url 'contact' %}" class="text-white text-decoration-none footer-link">Contact</a></li>
+                    <li><a href="{% url 'login' %}" class="text-white text-decoration-none footer-link">Login</a></li>
                 </ul>
             </div>
 
