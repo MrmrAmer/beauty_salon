@@ -43,7 +43,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=45)
     email = models.CharField(max_length=100, unique=True)
     phone = models.CharField(max_length=15)
-    password = models.CharField(max_length=45)
+    password = models.CharField(max_length=80)
     user_level = models.ForeignKey(UserLevel, on_delete=models.CASCADE, related_name='users')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
