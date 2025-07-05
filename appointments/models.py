@@ -39,15 +39,22 @@ class BookingManager(models.Manager):
             errors['time'] = "Time is required."
 
         return errors
+    
 
+STATUS_CHOICES = (
+    ('pending', 'Pending'),
+    ('confirmed', 'Confirmed'),
+    ('cancelled', 'Cancelled'),
+)
 
 class Booking(models.Model):
     date = models.DateField()
     time = models.TimeField()
-    status = models.CharField(max_length=45)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="customer_bookings")
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name="booked_services")
     staff = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="staff_bookings")
+    reminder_sent = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
