@@ -35,6 +35,7 @@ def login_view(request):
             user = User.objects.get(email=request.POST['email'])
             if bcrypt.checkpw(request.POST['password'].encode(), user.password.encode()):
                 request.session['user_id'] = user.id
+                request.session['role'] = user.user_level.level_name
                 next_url = request.GET.get('next')
                 return redirect(next_url if next_url else '/dashboard')
             else:
@@ -44,15 +45,28 @@ def login_view(request):
         return redirect('/login')
     return render(request, 'users/login.html')
 
+
 def logout_view(request):
     request.session.flush()
     return redirect('/')
 
 def dashboard(request):
-    if 'user_id' not in request.session:
+    user_id = request.session.get('user_id')
+    if not user_id:
         return redirect('/login')
+
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return redirect('/login')
+
+    if user.user_level.level_name == 'admin':
+        return redirect('admin_dashboard')
+    elif user.user_level.level_name == 'staff':
+        return redirect('staff_dashboard')
+
     context = {
-        'user': User.objects.get(id=request.session['user_id'])
+        'user': user
     }
     return render(request, 'users/dashboard.html', context)
 

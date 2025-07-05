@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container my-5">
+
+    <h2 class="text-center mb-4 fw-bold">Welcome Admin, <strong>{{ user.first_name }}</strong>!</h2>
+    <h2 class="text-center mb-4 fw-bold">📋 All Bookings</h2>
+
+    <form method="get" class="row g-3 justify-content-center align-items-end mb-4" id="filterForm">
+
+        <div class="col-md-2">
+            <div class="form-floating">
+                <select name="status" id="status" class="form-select" onchange="this.form.submit();">
+                    <option value="">All Status</option>
+                    <option value="pending" {% if selected_status == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="confirmed" {% if selected_status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                    <option value="cancelled" {% if selected_status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                </select>
+                <label for="status">Status</label>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-floating">
+                <select name="staff" id="staff" class="form-select" onchange="this.form.submit();">
+                    <option value="">All Staff</option>
+                    {% for staff in staff_members %}
+                        <option value="{{ staff.id }}" {% if staff.id == selected_staff %}selected{% endif %}>
+                            {{ staff.first_name }} {{ staff.last_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <label for="staff">Staff</label>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-floating">
+                <input type="date" id="start_date" name="start_date" class="form-control"
+                        value="{{ selected_start|default:'' }}"
+                        onchange="this.form.submit();">
+                <label for="start_date">Start Date</label>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-floating">
+                <input type="date" id="end_date" name="end_date" class="form-control"
+                        value="{{ selected_end|default:'' }}"
+                        onchange="this.form.submit();">
+                <label for="end_date">End Date</label>
+            </div>
+        </div>
+
+        <div class="col-auto d-flex align-items-center">
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary" title="Reset Filters">
+                <i class="bi bi-arrow-clockwise"></i>
+            </a>
+        </div>
+    </form>
+
+    <div class="text-center text-muted mb-3">
+        Showing {{ bookings|length }} booking{{ bookings|length|pluralize }}
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if bookings %}
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for b in bookings %}
+                <div class="col">
+                    <div class="card shadow h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ b.service.name }}</h5>
+                            <p class="card-text mb-1"><strong>Date:</strong> {{ b.date }}</p>
+                            <p class="card-text mb-1"><strong>Time:</strong> {{ b.time }}</p>
+                            <p class="card-text mb-1"><strong>Customer:</strong> {{ b.user.first_name }} {{ b.user.last_name }}</p>
+                            <p class="card-text mb-1"><strong>Staff:</strong> {{ b.staff.first_name }} {{ b.staff.last_name }}</p>
+                            <p class="card-text mb-2">
+                                <strong>Status:</strong>
+                                {% if b.status == 'confirmed' %}
+                                    <span class="text-success">✅ Confirmed</span>
+                                {% elif b.status == 'cancelled' %}
+                                    <span class="text-danger">❌ Cancelled</span>
+                                {% else %}
+                                    <span class="text-warning">⏳ Pending</span>
+                                {% endif %}
+                            </p>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% if b.status != 'confirmed' %}
+                                    <a href="{% url 'update_booking_status' b.id 'confirm' %}" class="btn btn-sm btn-success">Confirm</a>
+                                {% endif %}
+                                {% if b.status != 'cancelled' %}
+                                    <a href="{% url 'update_booking_status' b.id 'cancel' %}" class="btn btn-sm btn-danger">Cancel</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-muted">No bookings found.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
