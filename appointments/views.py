@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from datetime import datetime, timedelta
 from datetime import date
+from utils.whatsapp import send_whatsapp_message
 
 def book_appointment(request, service_id=None):
     if 'user_id' not in request.session:
@@ -23,13 +24,17 @@ def book_appointment(request, service_id=None):
         service = Service.objects.get(id=request.POST['service_id'])
         staff = User.objects.get(id=request.POST['staff_id'])
 
-        Booking.objects.create(
+        booking = Booking.objects.create(
             user=user,
             service=service,
             staff=staff,
             date=request.POST['date'],
             time=request.POST['time'],
             status='pending',
+        )
+        send_whatsapp_message(
+            to=user.phone,
+            message=f"Hi {user.first_name}, your appointment for {service.name} is booked on {booking.date} at {booking.time}. We'll confirm it shortly!"
         )
         messages.success(request, "Appointment booked successfully.")
         return redirect('/appointments/my_bookings/')
@@ -87,7 +92,7 @@ def get_available_slots(request):
     step = timedelta(minutes=service_duration)
 
     start_time = datetime.combine(date, datetime.strptime('09:00', '%H:%M').time())
-    end_time = datetime.combine(date, datetime.strptime('17:00', '%H:%M').time())
+    end_time = datetime.combine(date, datetime.strptime('23:00', '%H:%M').time())
 
     existing_bookings = Booking.objects.filter(
         staff_id=staff_id,
