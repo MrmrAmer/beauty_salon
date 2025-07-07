@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'store',
     'chat',
     'django_q',
+    'notifications',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

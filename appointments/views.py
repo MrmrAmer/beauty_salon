@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from datetime import datetime, timedelta
 from datetime import date
 from utils.whatsapp import send_whatsapp_message
+from notifications.models import Notification
 
 def book_appointment(request, service_id=None):
     if 'user_id' not in request.session:
@@ -36,6 +37,21 @@ def book_appointment(request, service_id=None):
             to=user.phone,
             message=f"Hi {user.first_name}, your appointment for {service.name} is booked on {booking.date} at {booking.time}. We'll confirm it shortly!"
         )
+
+        # Notify the assigned staff
+        Notification.objects.create(
+            recipient=staff,
+            message=f"📅 New appointment booked by {user.first_name} for {service.name} on {booking.date} at {booking.time}"
+        )
+
+        # Notify all admin users
+        admin_users = User.objects.filter(user_level__level_name__iexact="admin")
+        for admin in admin_users:
+            Notification.objects.create(
+                recipient=admin,
+                message=f"📢 New appointment booked by {user.first_name} for {service.name} with {staff.first_name} on {booking.date} at {booking.time}"
+        )
+
         messages.success(request, "Appointment booked successfully.")
         return redirect('/appointments/my_bookings/')
 
